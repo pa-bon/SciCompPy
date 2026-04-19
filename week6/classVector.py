@@ -25,8 +25,14 @@ class Vector:
     def __sub__(self, other):   # v - w
         return Vector(self.x - other.x, self.y - other.y, self.z - other.z)
     
-    def __mul__(self, other):   # return the dot product (number)
-        return self.x * other.x + self.y * other.y + self.z * other.z
+    def __mul__(self, other):   # return multiplication by scalar (vector) or the dot product (number)
+        if str(type(other)) in ["<class 'int'>", "<class 'float'>"]:
+            return Vector(self.x * other, self.y * other, self.z * other)
+        else:
+            return self.x * other.x + self.y * other.y + self.z * other.z
+    
+    def __rmul__(self, other):  # called only if the factor on the left (other) is not a vector 
+        return Vector(self.x * other, self.y * other, self.z * other)
 
     def cross(self, other):     # return the cross product (Vector)
         return Vector(
@@ -49,6 +55,8 @@ assert v != w
 assert v + w == Vector(9, 2, 5.5)
 assert v - w == Vector(-3, 6, 4.5)
 assert v * w == 12.5
+assert v * 2.0 == Vector(6, 8, 10)
+assert 2 * v == Vector(6, 8, 10)
 assert v.cross(w) == Vector(12, 28.5, -30)
 assert v.length() == math.sqrt(50)
 S = set([v, v, w])
